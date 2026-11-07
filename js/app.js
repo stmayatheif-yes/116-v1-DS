@@ -147,7 +147,7 @@ function renderTable() {
     const pdfCell = document.createElement("td");
     pdfCell.innerHTML = r.pdf116_url
       ? `<a class="pdf-link" href="${r.pdf116_url}" target="_blank" rel="noopener">116 PDF ↗</a>
-         <br><button class="pdf-link btn-detail" data-code="${r.code}">詳情</button>`
+         `
       : "—";
 
     tr.append(nameCell, schoolCell, catCell, s116, s115, pdfCell);
