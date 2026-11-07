@@ -1,0 +1,38 @@
+[
+  {
+    "code": "001012",
+    "name": "中國文學系",
+    "school": "國立臺灣大學",
+    "category": "一般",
+    "group": "文史哲",
+    "subjects116": ["國文", "英文"],
+    "subjects115": ["國文", "英文"],
+    "changed": false,
+    "no_115_record": false,
+    "pdf116_url": "https://www.cac.edu.tw/apply116/..."
+  },
+  {
+    "code": "001022",
+    "name": "外國語文學系",
+    "school": "國立臺灣大學",
+    "category": "一般",
+    "group": "外語",
+    "subjects116": ["國文", "英文", "數學B"],
+    "subjects115": ["國文", "英文"],
+    "changed": true,
+    "no_115_record": false,
+    "pdf116_url": "https://www.cac.edu.tw/apply116/..."
+  },
+  {
+    "code": "001092",
+    "name": "數學系",
+    "school": "國立臺灣大學",
+    "category": "一般",
+    "group": "數理化",
+    "subjects116": ["英文", "數學A", "自然"],
+    "subjects115": null,
+    "changed": false,
+    "no_115_record": true,
+    "pdf116_url": "https://www.cac.edu.tw/apply116/..."
+  }
+]
