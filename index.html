@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>116申請入學資料觀察室</title>
+<link rel="stylesheet" href="css/style.css">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+</head>
+<body>
+<header class="hero">
+  <div class="hero-inner">
+    <p class="eyebrow">116 學年度 · 學科能力測驗</p>
+    <h1>看懂每個校系<br>參採哪些科目</h1>
+    <p class="sub">以 116 年校系為主，並列 115 年同校同名校系的學測參採科目，快速看出新增與移除的科目。</p>
+    <ul class="stats" id="topStats">
+      <li><strong id="statSchools">–</strong><span>校系與組別</span></li>
+      <li><strong id="statUnivs">–</strong><span>學校</span></li>
+      <li><strong id="statSubjects">–</strong><span>學測科目</span></li>
+    </ul>
+    <div class="notice">
+      <strong>資料提醒</strong> 兩年參採科目依官方一覽表比較；116 年檢定標準與篩選倍率另依官方校系分則整理。正式招生條件仍以官方簡章為準。
+    </div>
+    <div class="notice warn">
+      <strong>免責聲明</strong> 內容如果有錯，請以大學甄選入學委員會官方資料為準。
+    </div>
+  </div>
+</header>
+
+<main>
+  <section class="block">
+    <p class="section-label">EXPLORE</p>
+    <h2>校系查詢</h2>
+    <p class="muted">篩選條件可組合使用；統計圖表會跟著查詢結果更新。</p>
+
+    <div class="filters">
+      <label>學校
+        <select id="fSchool"><option value="">全部學校</option></select>
+      </label>
+      <label>類別
+        <select id="fCategory"><option value="">全部類別</option></select>
+      </label>
+      <label class="grow">關鍵字
+        <input id="fKeyword" type="search" placeholder="校系名稱或代碼">
+      </label>
+      <div class="subjects" id="fSubjects">
+        <span class="subjects-label">參採科目</span>
+        <!-- JS 產生 checkbox -->
+      </div>
+      <button id="clearFilters" class="btn-ghost">清除條件</button>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="result-head">
+      <p class="section-label">RESULTS</p>
+      <h2>查詢結果 <span id="resultCount">–</span></h2>
+    </div>
+    <p class="muted small">以 116 校系為查詢主體；115 依同校、同名校系配對。可點校系旁按鈕查看兩年的檢定標準與篩選倍率。</p>
+
+    <div class="table-wrap">
+      <table id="resultTable">
+        <thead>
+          <tr>
+            <th>116 校系代碼 / 名稱</th>
+            <th>學校</th>
+            <th>類別</th>
+            <th>116 參採科目</th>
+            <th>115 參採科目</th>
+            <th>原始資料</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+      <p id="emptyMsg" class="empty" hidden>沒有符合條件的校系。試著減少科目或清除條件。</p>
+    </div>
+  </section>
+
+  <section class="block">
+    <p class="section-label">INSIGHTS</p>
+    <h2>參採分析</h2>
+    <p class="muted" id="scopeText">目前範圍：全部學校</p>
+
+    <div class="kpis" id="kpis">
+      <div class="kpi"><strong id="kpiChanged">–</strong><span>兩年科目有變動</span></div>
+      <div class="kpi"><strong id="kpiSame">–</strong><span>兩年科目相同</span></div>
+      <div class="kpi"><strong id="kpiNo115">–</strong><span>115 無同名紀錄</span></div>
+    </div>
+
+    <div class="charts">
+      <div class="chart-card">
+        <p class="chart-no">01</p>
+        <h3>116 各科目參採校系數</h3>
+        <p class="muted small">一個校系可能同時參採多科，長條數值不能相加。</p>
+        <canvas id="chartSubjects"></canvas>
+      </div>
+      <div class="chart-card">
+        <p class="chart-no">02</p>
+        <h3>116 參採科目數分布</h3>
+        <p class="muted small">每個校系計入一個科目數區間。</p>
+        <canvas id="chartCount"></canvas>
+      </div>
+    </div>
+  </section>
+
+  <section class="block method">
+    <p class="section-label">SOURCE &amp; METHOD</p>
+    <h2>資料與計算方式</h2>
+    <p>資料來自大學甄選入學委員會的 116 與 115 學年度「申請入學」招生校系參採學測科目一覽表。本站以 116 年校系為主，依學校代碼與正規化後的校系名稱尋找 115 年同名紀錄。校系代碼在兩年間可能改變，因此不以六碼校系代碼單獨配對。</p>
+    <p>「115 無同名紀錄」表示無法可靠配對，不能直接解讀為新設校系；更名或改組也可能造成此情況。變動標示僅比較兩年參採科目集合。「參採」包含檢定、倍率篩選及採計，本站不區分具體用途。數學 A 與數學 B 分別計數。正式招生條件仍以官方簡章為準。</p>
+  </section>
+</main>
+
+<!-- 詳情 modal -->
+<div class="modal" id="modal" hidden>
+  <div class="modal-box">
+    <button class="modal-close" id="modalClose" aria-label="關閉">×</button>
+    <div id="modalBody"></div>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <p>資料來源：大學甄選入學委員會 · 本站僅供參考，以官方簡章為準。</p>
+</footer>
+
+<script src="js/app.js"></script>
+<script src="js/charts.js"></script>
+</body>
+</html>
